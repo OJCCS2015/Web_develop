@@ -1,0 +1,10 @@
+﻿@using VoteSystem.Models
+@model IEnumerable<VoteSystem.Models.User>
+@{
+    ViewBag.Title = "Index";
+}
+
+@foreach (User user in Model) {
+    @user.userNick
+}
+
