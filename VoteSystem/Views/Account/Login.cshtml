@@ -1,7 +1,32 @@
-﻿
+﻿@using VoteSystem.Models
+@model LoginModel
 @{
     ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
+@{Html.BeginForm("Login", "Account", FormMethod.Post);}
+    @Html.LabelFor(m => m.userEmail, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.userEmail, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.userEmail, "", new { @class = "text-danger" })
+    </div>
+    @Html.LabelFor(m => m.userPsw, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.PasswordFor(m => m.userPsw, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.userPsw, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="登录" class="btn btn-default" />
+        </div>
+    </div>
+    <p>
+        @Html.ActionLink("注册为新用户", "Register")
+    </p>
+    <p>
+        @Html.ActionLink("忘记了密码?", "ForgotPassword")
+    </p>
+@{Html.EndForm();}
+@ViewBag.res
 
