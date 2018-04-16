@@ -1,0 +1,40 @@
+﻿@using VoteSystem.Models
+@model ReSetModel
+@{
+    ViewBag.Title = "ResetPsw";
+}
+
+<h2>ResetPsw</h2>
+<div class="row">
+    <div class="col-lg-2">
+        <ul>
+            <li>
+                @Html.ActionLink("个人信息", "Info", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("重置密码", "ResetPsw", "Account")
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-10">
+        @{Html.BeginForm("ReSetPsw", "Account", FormMethod.Post); }
+
+            @Html.LabelFor(m => m.userPswOld, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.userPswOld, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.userPswOld, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.userPswNew, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.userPswNew, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.userPswNew, "", new { @class = "text-danger" })
+            </div>
+            @Html.LabelFor(m => m.userPswRe, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.userPswRe, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.userPswRe, "", new { @class = "text-danger" })
+            </div>
+        @{Html.EndForm();}
+        @ViewBag.res
+    </div>
+</div>

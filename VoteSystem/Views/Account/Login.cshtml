@@ -5,7 +5,7 @@
 }
 
 <h2>Login</h2>
-@{Html.BeginForm("Login", "Account", FormMethod.Post);}
+@{Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post);}
     @Html.LabelFor(m => m.userEmail, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.userEmail, new { @class = "form-control" })
@@ -29,4 +29,5 @@
     </p>
 @{Html.EndForm();}
 @ViewBag.res
+@ViewBag.returnUrl
 

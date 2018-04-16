@@ -38,4 +38,18 @@ namespace VoteSystem.Models
         [Display(Name ="确认密码")]
         public String userPswRe { get; set; }
     }
+    public class ReSetModel {
+        [Required]
+        public int ID { get; set; }
+        [Required]
+        [Display(Name ="旧密码")]
+        public String userPswOld { get; set; }
+        [Required]
+        [Display(Name ="新密码")]
+        public String userPswNew { get; set; }
+        [Required]
+        [Display(Name ="确认密码")]
+        [Compare("userPswNew",ErrorMessage = "密码和确认密码不匹配")]
+        public String userPswRe { get; set; }
+    }
 }

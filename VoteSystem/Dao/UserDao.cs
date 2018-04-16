@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using VoteSystem.Models;
@@ -29,6 +30,11 @@ namespace VoteSystem.Dao
         public User checkUser(User user) {
             User res = db.users.Where(u => u.userEmail == user.userEmail && u.userPsw == user.userPsw).FirstOrDefault();
             return res;
+        }
+        public void ReSetPsw(User user){
+            db.users.Attach(user);
+            db.Entry(user).State= EntityState.Modified;
+            db.SaveChanges();
         }
     }
 }

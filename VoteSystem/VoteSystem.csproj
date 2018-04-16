@@ -190,6 +190,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AuthenticationAttribute.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Type.cs" />
@@ -216,6 +217,11 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\VoteSystemDB\Index.cshtml" />
     <Content Include="Views\VoteSystemDB\Demo.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Account\ResetPsw.cshtml" />
+    <Content Include="Views\Home\AllQuestion.cshtml" />
+    <Content Include="Views\Home\Vote.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
