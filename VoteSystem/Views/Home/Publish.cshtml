@@ -1,0 +1,47 @@
+﻿@using VoteSystem.Models
+@model publishModel
+@{
+    ViewBag.Title = "Publish";
+}
+
+<h2>publish</h2>
+@{Html.BeginForm("Publish", "Home", FormMethod.Post);}
+    @Html.LabelFor(m => m.title, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m =>m.title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-2">
+        标签选择
+    </div>
+    <div class="col-md-10">
+        标签
+    </div>
+
+    @Html.LabelFor(m => m.queDes, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextAreaFor(m => m.queDes, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.queDes, "", new { @class = "text-danger" })
+    </div>
+
+    @Html.LabelFor(m => m.endTime, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        <input type="date" name="endTime">
+    </div>
+
+    <div class="col-md-2">
+        选项数
+    </div>
+    <div class="col-md-10">
+        <input type="number" value="1" min="1">
+    </div>
+    
+    <div class="col-md-2">
+        选项
+    </div>
+    <div class="col-md-10">
+        动态生成选项
+    </div>
+@{Html.EndForm();}
+

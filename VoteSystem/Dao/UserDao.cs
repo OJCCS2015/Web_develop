@@ -10,9 +10,15 @@ namespace VoteSystem.Dao
     public class UserDao
     {
         private VoteSystemDB db = new VoteSystemDB();
-        //保存用户
-        public void addUser(User user) {
+        //添加用户
+        public void add(User user) {
             db.users.Add(user);
+            db.SaveChanges();
+        }
+        //修改用户信息
+        public void update(User user) {
+            db.users.Attach(user);
+            db.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
         }
         //获得指定id的用户
@@ -31,6 +37,7 @@ namespace VoteSystem.Dao
             User res = db.users.Where(u => u.userEmail == user.userEmail && u.userPsw == user.userPsw).FirstOrDefault();
             return res;
         }
+        //修改密码
         public void ReSetPsw(User user){
             db.users.Attach(user);
             db.Entry(user).State= EntityState.Modified;

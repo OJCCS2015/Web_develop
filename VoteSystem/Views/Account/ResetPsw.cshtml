@@ -12,28 +12,32 @@
                 @Html.ActionLink("个人信息", "Info", "Account")
             </li>
             <li>
-                @Html.ActionLink("重置密码", "ResetPsw", "Account")
+                @Html.ActionLink("修改密码", "ResetPsw", "Account")
             </li>
         </ul>
     </div>
     <div class="col-lg-10">
         @{Html.BeginForm("ReSetPsw", "Account", FormMethod.Post); }
 
+            @Html.HiddenFor(m=>m.ID)
             @Html.LabelFor(m => m.userPswOld, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.userPswOld, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.userPswOld, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.userPswOld, "", new { @class = "text-danger" })
             </div>
+
             @Html.LabelFor(m => m.userPswNew, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.userPswNew, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.userPswNew, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.userPswNew, "", new { @class = "text-danger" })
             </div>
+
             @Html.LabelFor(m => m.userPswRe, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.userPswRe, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.userPswRe, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.userPswRe, "", new { @class = "text-danger" })
             </div>
+            <input type="submit" value="提交修改"/>
         @{Html.EndForm();}
         @ViewBag.res
     </div>
