@@ -154,6 +154,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\vote.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -173,6 +174,7 @@
     <Content Include="scripts\respond.js" />
     <Content Include="scripts\respond.min.js" />
     <None Include="scripts\_references.js" />
+    <Content Include="scripts\vote.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -184,6 +186,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\pagesController.cs" />
     <Compile Include="Controllers\VoteSystemDBController.cs" />
     <Compile Include="Dao\UserDao.cs" />
     <Compile Include="Global.asax.cs">
@@ -222,6 +225,7 @@
     <Content Include="Views\Account\ResetPsw.cshtml" />
     <Content Include="Views\Home\AllQuestion.cshtml" />
     <Content Include="Views\Home\Vote.cshtml" />
+    <Content Include="Views\pages\vote.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

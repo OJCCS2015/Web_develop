@@ -25,7 +25,12 @@ namespace VoteSystem
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/vote.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/vote").Include(
+                      "~/scripts/vote.js"));
+           
         }
     }
 }
