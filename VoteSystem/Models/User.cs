@@ -18,6 +18,5 @@ namespace VoteSystem.Models
         public double brierNum { get; set; }//布雷尔分数
         public int rightNum { get; set; }//预测正确数
         public int upvoteNum { get; set; }//收到赞数
-
     }
 }

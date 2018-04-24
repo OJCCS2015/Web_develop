@@ -1,4 +1,5 @@
-﻿
+﻿@using VoteSystem.Models
+@model InfoModel
 @{
     ViewBag.Title = "Info";
 }
@@ -11,11 +12,38 @@
                 @Html.ActionLink("个人信息", "Info", "Account")
             </li>
             <li>
-                @Html.ActionLink("重置密码", "ResetPsw", "Account")
+                @Html.ActionLink("修改密码", "ResetPsw", "Account")
             </li>
         </ul>
     </div>
     <div class="col-lg-10">
-        个人信息
+        @{Html.BeginForm("Info", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post);}
+        @Html.HiddenFor(m => m.ID)
+        @Html.LabelFor(m => m.userNick, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.userNick, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.userNick, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(m => m.userDes, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.userDes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.userDes, "", new { @class = "text-danger" })
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="提交修改 " class="btn btn-default" />
+            </div>
+        </div>
+        @{Html.EndForm();}
+        @ViewBag.res
+        <div>预测题目数：@Model.pridectNum</div>
+        <div>发布题目数：@Model.postNum</div>
+        <div>中位数：@Model.middleNum</div>
+        <div>布雷尔分数：@Model.brierNum</div>
+        <div>预测正确数：@Model.rightNum</div>
+        <div>收到赞数：@Model.upvoteNum</div>
     </div>
+
 </div>

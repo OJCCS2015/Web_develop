@@ -188,12 +188,18 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\pagesController.cs" />
     <Compile Include="Controllers\VoteSystemDBController.cs" />
+    <Compile Include="Dao\QuestionDao.cs" />
+    <Compile Include="Dao\TagDao.cs" />
+    <Compile Include="Dao\TypeDao.cs" />
+    <Compile Include="Dao\UpVoteDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
+    <Compile Include="Dao\VoteDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AuthenticationAttribute.cs" />
+    <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Type.cs" />
@@ -223,9 +229,13 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
     <Content Include="Views\Account\ResetPsw.cshtml" />
-    <Content Include="Views\Home\AllQuestion.cshtml" />
     <Content Include="Views\Home\Vote.cshtml" />
     <Content Include="Views\pages\vote.cshtml" />
+    <Content Include="Views\Home\Publish.cshtml" />
+    <Content Include="Views\Home\MyPublish.cshtml" />
+    <Content Include="Views\Home\MyVote.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
+    <Content Include="Views\pages\PubQuestion.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

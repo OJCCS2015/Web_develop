@@ -35,7 +35,7 @@ namespace VoteSystem.Controllers
                 ViewBag.res = "用户已存在";
                 return View(model);
             }else {
-                userdao.addUser(user);
+                userdao.add(user);
                 ViewBag.res = "注册成功";
                 HttpCookie cookie = new HttpCookie("Menber");
                 cookie.Values["ID"] = user.ID.ToString();
@@ -67,17 +67,48 @@ namespace VoteSystem.Controllers
                 cookie.Values["ID"] = user.ID.ToString();
                 cookie.Values["userNick"] = user.userNick;
                 Response.Cookies.Add(cookie);
-                return Redirect(returnUrl);
+      
+                return Redirect(returnUrl==null?"/Home":returnUrl);
             }
             else
                 ViewBag.res = "登录失败";
             return View();
         }
-        public Boolean checkByUserEmail() {
-            return false;
-        }
 
-        public ActionResult Info() { 
+        public ActionResult Info() {
+            InfoModel model = new InfoModel();
+            UserDao userdao = new UserDao();
+            User user = userdao.getById(int.Parse(Request.Cookies["Menber"].Values["ID"]));
+
+            model.ID= user.ID;
+            model.userNick = user.userNick;
+            model.userDes = user.userDes;
+            model.pridectNum = user.pridectNum;
+            model.postNum = user.postNum;
+            model.middleNum = user.middleNum;
+            model.brierNum = user.brierNum;
+            model.rightNum = user.rightNum;
+            model.upvoteNum = user.upvoteNum;
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Info(InfoModel model) {
+            UserDao userdao = new UserDao();
+
+            User user = userdao.getById(model.ID);
+            user.userNick = model.userNick;
+            user.userDes = model.userDes;
+            userdao.update(user);
+            //更新cookie
+            Request.Cookies["Menber"].Values["userNick"] = model.userNick;//解决当前页面用户名没更新
+            HttpCookie cookie = new HttpCookie("Menber");
+            cookie.Values["ID"] = model.ID.ToString();
+            cookie.Values["userNick"]= model.userNick;
+            Response.Cookies.Add(cookie);
+
+            ViewBag.res = "修改成功！";
+
             return View();
         }
         //修改密码

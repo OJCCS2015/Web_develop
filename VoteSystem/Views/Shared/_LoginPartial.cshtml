@@ -6,7 +6,7 @@
             @Html.AntiForgeryToken()
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    @Html.ActionLink("你好，" + Request.Cookies["Menber"].Values["userNick"].ToString() + "!", "Info", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    @Html.ActionLink(Request.Cookies["Menber"].Values["userNick"]==null?"用户名":Request.Cookies["Menber"].Values["userNick"].ToString(), "Info", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
                 </li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
             </ul>
@@ -20,10 +20,18 @@
         </ul>
     }
 <ul class="nav navbar-nav navbar-right">
-    <li style="padding-top:15px;padding-bottom:15px;">
-        @{Html.BeginForm("Search", "Home", FormMethod.Post);}
-        <input name="searchText" type="text" placeholder="search">
-        <input name="search" type="submit" value="提交">
-        @{ Html.EndForm();}
+    <li>
+        <form class="navbar-form" id="search-form" role="search" action="/search/query">
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="search-input" type="text" class="form-control input-sm" name="term" placeholder="请输入关键字" value="">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" id="search-button">
+                            搜索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </li>
 </ul>
