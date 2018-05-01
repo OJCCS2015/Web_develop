@@ -186,11 +186,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-<<<<<<< HEAD
-=======
-    <Compile Include="Controllers\pagesController.cs" />
-    <Compile Include="Controllers\VoteSystemDBController.cs" />
->>>>>>> 8fda1010633ee42624ef7880fdac3850255df3a0
     <Compile Include="Dao\QuestionDao.cs" />
     <Compile Include="Dao\TypeDao.cs" />
     <Compile Include="Dao\UpVoteDao.cs" />
