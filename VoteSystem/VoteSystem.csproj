@@ -174,6 +174,7 @@
     <Content Include="scripts\respond.js" />
     <Content Include="scripts\respond.min.js" />
     <None Include="scripts\_references.js" />
+    <Content Include="scripts\vote.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -185,6 +186,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Controllers\pagesController.cs" />
+    <Compile Include="Controllers\VoteSystemDBController.cs" />
+>>>>>>> 8fda1010633ee42624ef7880fdac3850255df3a0
     <Compile Include="Dao\QuestionDao.cs" />
     <Compile Include="Dao\TypeDao.cs" />
     <Compile Include="Dao\UpVoteDao.cs" />
@@ -223,9 +229,12 @@
     <Content Include="Views\Account\Info.cshtml" />
     <Content Include="Views\Account\ResetPsw.cshtml" />
     <Content Include="Views\Home\Vote.cshtml" />
+    <Content Include="Views\pages\vote.cshtml" />
     <Content Include="Views\Home\Publish.cshtml" />
     <Content Include="Views\Home\MyPublish.cshtml" />
     <Content Include="Views\Home\MyVote.cshtml" />
+    <Content Include="Views\Shared\_Navbar.cshtml" />
+    <Content Include="Views\pages\PubQuestion.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

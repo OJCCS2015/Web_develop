@@ -20,10 +20,18 @@
         </ul>
     }
 <ul class="nav navbar-nav navbar-right">
-    <li style="padding-top:15px;padding-bottom:15px;">
-        @{Html.BeginForm("Search", "Home", FormMethod.Post);}
-        @Html.TextBox("searchText")
-        <input name="search" type="submit" value="提交">
-        @{ Html.EndForm();}
+    <li>
+        <form class="navbar-form" id="search-form" role="search" action="/search/query">
+            <div class="form-group">
+                <div class="input-group">
+                    <input id="search-input" type="text" class="form-control input-sm" name="term" placeholder="请输入关键字" value="">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" id="search-button">
+                            搜索
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </li>
 </ul>

@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewBag.Title = "Home Page";
+    
 }
 @Scripts.Render("~/bundles/jquery")
 @Styles.Render("~/Content/css")
@@ -10,7 +11,7 @@
 <div class="jumbotron">
     <h1>标题</h1>
     <p class="lead">网页描述</p>
-    <p><a href="/Home/Publish" class="btn btn-primary btn-lg">发布问题 &raquo;</a></p>
+    <p><a href="/pages/PubQuestion" class="btn btn-primary btn-lg">发布问题 &raquo;</a></p>
 </div>
 
 <div class="row" style="padding-top:10px;">
@@ -50,6 +51,7 @@
             </div>
     </div>
     <div class="col-md-9">
+
          @foreach (Question q in Model.questions)
          {
              if (q.optionNum == 1)
@@ -202,7 +204,7 @@
          }
                 
 
-                
+              
             </div>
         </div>
 
