@@ -8,7 +8,7 @@ namespace VoteSystem.Dao
 {
     public class TypeDao
     {
-        private VoteSystemDB db = new VoteSystemDB();
+        private VoteSystemDB db = (VoteSystemDB)DBContextFactory.GetCurrentContext();
         //保存类型
         public void add(Models.Type t) {
             db.types.Add(t);

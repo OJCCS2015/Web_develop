@@ -11,7 +11,7 @@ namespace VoteSystem.Controllers
     [Authentication]
     public class AccountController : Controller
     {
-        // GET: Account
+        //注册
         [AllowAnonymous]
         public ActionResult Register()
         {
@@ -30,6 +30,7 @@ namespace VoteSystem.Controllers
             user.userNick = model.userNick;
             user.userEmail = model.userEmail;
             user.userPsw = model.userPsw;
+            user.userCreate = user.userLast = DateTime.Now;
             if (userdao.getByUserEmail(user.userEmail) != null)
             {
                 ViewBag.res = "用户已存在";
@@ -44,6 +45,7 @@ namespace VoteSystem.Controllers
                 return Redirect(returnUrl);
             }
         }
+        //登录
         [AllowAnonymous]
         public ActionResult Login() {
             ViewBag.returnUrl = Request.UrlReferrer;
@@ -75,6 +77,7 @@ namespace VoteSystem.Controllers
             return View();
         }
 
+        //修改信息
         public ActionResult Info() {
             InfoModel model = new InfoModel();
             UserDao userdao = new UserDao();
@@ -109,8 +112,9 @@ namespace VoteSystem.Controllers
 
             ViewBag.res = "修改成功！";
 
-            return View();
+            return View(model);
         }
+
         //修改密码
         public ActionResult ReSetPsw() {
             ReSetModel model = new Models.ReSetModel();
@@ -124,7 +128,7 @@ namespace VoteSystem.Controllers
             User user = userdao.getById(model.ID);
             if (user.userPsw.Equals(model.userPswOld)) {
                 user.userPsw = model.userPswNew;
-                userdao.ReSetPsw(user);
+                userdao.update(user);
                 ViewBag.res = "修改成功";
                 return View();
             }

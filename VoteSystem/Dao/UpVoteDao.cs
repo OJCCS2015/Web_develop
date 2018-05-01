@@ -8,7 +8,7 @@ namespace VoteSystem.Dao
 {
     public class UpVoteDao
     {
-        private VoteSystemDB db = new VoteSystemDB();
+        private VoteSystemDB db = (VoteSystemDB)DBContextFactory.GetCurrentContext();
         //添加点赞
         public void add(Upvote upvote) {
             db.upvotes.Add(upvote);

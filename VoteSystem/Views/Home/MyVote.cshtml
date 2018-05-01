@@ -1,7 +1,192 @@
-﻿
+﻿@using VoteSystem.Models
+@model MyVoteModel
 @{
     ViewBag.Title = "MyVote";
 }
+@Scripts.Render("~/bundles/jquery")
+@Styles.Render("~/Content/css")
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 
-<h2>MyVote</h2>
+<div id="question_box" class="row">
+    <div class="col-md-3">
+        <div class="well">
+            <div class="col-md-12">
+                <strong>排序方式</strong>
+            </div>
+            <div class="col-md-12">
+                @Html.RadioButton("sortby", "startTime", true) 开始时间<br>
+                @Html.RadioButton("sortby", "endTime") 结束时间<br>
+                @Html.RadioButton("sortby", "predict") 预测人数<br>
+            </div>
 
+            <div class="col-md-12">
+                <hr>
+            </div>
+
+            <div class="col-md-12">
+                <strong>类型</strong>
+            </div>
+            <div class="col-md-12">
+                @foreach (VoteSystem.Models.Type t in Model.types)
+                {
+                    @Html.CheckBox("ck" + t.ID) @t.typeName<br>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        @foreach (Question q in Model.questions)
+        {
+            if (q.optionNum == 1)
+            {
+                <div class="col-md-6 well">
+                    <h2>@q.title</h2>
+                    <p>
+                        @q.queDes
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-4">
+                            <div class="binary-probability-value">
+                                <div class="binary-consensus">
+                                    <h3>@q.optionData</h3>
+                                </div>
+                                <small>机会</small>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-8 col-md-offset-0 col-xs-6 col-xs-offset-2">
+                            <div>
+                                <div class="question-detail-content">
+                                    <a class="btn btn-primary md-mobile-margin-bottom" href="/Home/vote?questionID=@q.ID">vote &raquo;</a>
+                                    已投票人数：@q.voteCount
+                                </div>
+                                <hr />
+                                <div class="metadata">
+                                    <div>
+                                        <span class="info-heading">
+                                            开始时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.postTime</span></small>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="info-heading">
+                                            截止时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.endTime</span></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6 well">
+                    <h2>@q.title</h2>
+                    <p>
+                        @q.queDes
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div id="main_@q.ID" style="height:200px;width:200px"></div>
+                            <script type="text/javascript">
+                                // 路径配置
+                                require.config({
+                                    paths: {
+                                        echarts: 'http://echarts.baidu.com/build/dist'
+                                    }
+                                });
+
+                                // 使用
+                                require(
+                                    [
+                                        'echarts',
+                                        'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                                    ],
+                                    function (ec) {
+                                        // 基于准备好的dom，初始化echarts图表
+                                        var myChart = ec.init(document.getElementById('main_@q.ID'));
+                                        var str = '@q.optionData';
+                                        var jsonstr = str.replace(/&quot;/g, '"')
+                                        option = {
+                                            calculable: true,
+                                            series: [
+						                        {
+						                            name: '访问来源',
+						                            type: 'pie',
+						                            radius: ['50%', '70%'],
+						                            itemStyle: {
+						                                normal: {
+						                                    label: {
+						                                        show: false
+						                                    },
+						                                    labelLine: {
+						                                        show: false
+						                                    }
+						                                },
+						                                emphasis: {
+						                                    label: {
+						                                        show: true,
+						                                        position: 'center',
+						                                        textStyle: {
+						                                            fontSize: '20',
+						                                        }
+						                                    }
+						                                }
+						                            },
+						                            data: JSON.parse(jsonstr)
+						                        }
+                                            ]
+                                        };
+
+                                        // 为echarts对象加载数据
+                                        myChart.setOption(option);
+                                    }
+                                );
+                            </script>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div>
+                                <div class="question-detail-content">
+                                    <a class="btn btn-primary md-mobile-margin-bottom" href="/Home/vote?questionID=@q.ID">vote &raquo;</a>
+                                    已投票人数：@q.voteCount
+                                </div>
+                                <hr />
+                                <div class="metadata">
+                                    <div>
+                                        <span class="info-heading">
+                                            开始时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.postTime</span></small>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="info-heading">
+                                            截止时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.endTime</span></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+
+
+    </div>
+</div>

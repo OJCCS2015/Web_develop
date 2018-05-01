@@ -3,20 +3,27 @@
 @{
     ViewBag.Title = "Publish";
 }
+<h1>发布问题</h1>
+<div class="well" style="height:80vh;">
+    @{Html.BeginForm("Publish", "Home", FormMethod.Post, new { onsubmit = "getOptions()" });}
+    @Html.HiddenFor(m => m.userID)
+    @Html.ValidationMessageFor(m => m.userID, "", new { @class = "text-danger" })
+    @Html.LabelFor(m => m.postTime, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.postTime, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(m => m.postTime, "", new { @class = "text-danger" })
+    </div>
 
-<h2>publish</h2>
-@{Html.BeginForm("Publish", "Home", FormMethod.Post);}
+    @Html.LabelFor(m => m.endTime, new { @class = "col-md-2 control-label" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.endTime, new { @class = "form-control", type = "date" })
+        @Html.ValidationMessageFor(m => m.endTime, "", new { @class = "text-danger" })
+    </div>
+
     @Html.LabelFor(m => m.title, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
-        @Html.TextBoxFor(m =>m.title, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="col-md-2">
-        标签选择
-    </div>
-    <div class="col-md-10">
-        标签
     </div>
 
     @Html.LabelFor(m => m.queDes, new { @class = "col-md-2 control-label" })
@@ -25,23 +32,63 @@
         @Html.ValidationMessageFor(m => m.queDes, "", new { @class = "text-danger" })
     </div>
 
-    @Html.LabelFor(m => m.endTime, new { @class = "col-md-2 control-label" })
+    @Html.LabelFor(m => m.typeID, new { @class = "col-md-2 control-label" })
     <div class="col-md-10">
-        <input type="date" name="endTime">
+        @Html.DropDownListFor(m => m.typeID, Model.types)
+        @Html.ValidationMessageFor(m => m.typeID, "", new { @class = "text-danger" })
     </div>
 
-    <div class="col-md-2">
-        选项数
-    </div>
-    <div class="col-md-10">
-        <input type="number" value="1" min="1">
-    </div>
-    
-    <div class="col-md-2">
-        选项
-    </div>
-    <div class="col-md-10">
-        动态生成选项
-    </div>
-@{Html.EndForm();}
+    <div style="clear:both ;"></div>
 
+        @Html.LabelFor(m => m.tags, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.tags, new { @class = "form-control", placeholder = "标签#政治#经济#" })
+            @Html.ValidationMessageFor(m => m.tags, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(m => m.optionNum, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.optionNum, new { id = "optionNum", @class = "form-control", type = "number", onchange = "addOption()" })
+            @Html.ValidationMessageFor(m => m.optionNum, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(m => m.options, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <div id="options">
+                <div class='option_box' style='display:flex;flex-direction:row;'><input id='option_0' class='form-control' type='text'></div>
+            </div>
+            @Html.HiddenFor(m => m.options, new { id = "optionsRes" })
+            @Html.ValidationMessageFor(m => m.options, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="col-md-12">
+            <input type="submit" value="提交" />
+        </div>
+
+        @{Html.EndForm();}
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    function addOption() {
+        var num = $("#optionNum").val()
+        if (num > 8 || num < 1)
+            num = 1;
+        $("#options").html("")
+        for(var i=0;i<num;i++){
+            $("#options").append("<div class='option_box' style='display:flex;flex-direction:row;'><input id='option_"+i+"' class='form-control' type='text'></div>")
+        }
+        $("#optionNum").val(num)
+    }
+    function getOptions() {
+        var num = $("#optionNum").val()
+        var res=""
+        for (var i = 0; i < num; i++) {
+            res += $("#option_" + i + "").val() + "#"
+        }
+        $("#optionsRes").val(res)
+    }
+</script>
+<script>
+    $("#optionNum").val(1)
+    $("#optionsRes").val("")
+</script>

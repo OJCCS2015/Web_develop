@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Home Page";
 }
+@Scripts.Render("~/bundles/jquery")
+@Styles.Render("~/Content/css")
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
 
 <div class="jumbotron">
     <h1>标题</h1>
@@ -10,77 +13,246 @@
     <p><a href="/Home/Publish" class="btn btn-primary btn-lg">发布问题 &raquo;</a></p>
 </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <ul class="nav nav-tabs">
-            <li class="active">问题</li>
-            <li>排行榜</li>
+<div class="row" style="padding-top:10px;">
+    <div class="col-md-12">
+        <ul id="challenge-question-list-tabs" class="nav nav-tabs nav-tabs-transparent-content">
+            <li id="question_nav" class="active"><a href="javascript:question_show();">问题</a></li>
+            <li id="paihang_nav" class=""><a href="javascript:paihang_show();">排行榜</a></li>
         </ul>
     </div>
 </div>
-<div class="row">
+
+<div id="question_box" class="row">
     <div class="col-md-3">
-        <div class="row">
+        <div class="well">
             <div class="col-md-12">
-                排序方式
+                <strong>排序方式</strong>
             </div>
             <div class="col-md-12">
-                @Html.RadioButton("sortby","startTime",true) 开始时间<br>
+                @Html.RadioButton("sortby", "startTime", true) 开始时间<br>
                 @Html.RadioButton("sortby", "endTime") 结束时间<br>
                 @Html.RadioButton("sortby", "predict") 预测人数<br>
             </div>
-            <hr />
+
             <div class="col-md-12">
-                标签
+                <hr>
             </div>
-            <div class="col-md-12">
-                @foreach (Tag t in Model.tags)
-                {
-                    @Html.CheckBox("ck"+t.ID) @t.tagName<br>
-                }
+
+                <div class="col-md-12">
+                    <strong>类型</strong>
+                </div>
+                <div class="col-md-12">
+                    @foreach (VoteSystem.Models.Type t in Model.types)
+                    {
+                        @Html.CheckBox("ck" + t.ID) @t.typeName<br>
+                    }
+                </div>
             </div>
-        </div>
     </div>
     <div class="col-md-9">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>问题</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and gives you full control over markup
-                    for enjoyable, agile development.
-                </p>
-                <p><a class="btn btn-default" href="/Home/Vote">vote &raquo;</a></p>
-            </div>
-            <div class="col-md-6">
-                <h2>问题</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and gives you full control over markup
-                    for enjoyable, agile development.
-                </p>
-                <p><a class="btn btn-default" href="">vote &raquo;</a></p>
+         @foreach (Question q in Model.questions)
+         {
+             if (q.optionNum == 1)
+             {
+                <div class="col-md-6 well">
+                    <h2>@q.title</h2>
+                    <p>
+                        @q.queDes
+                    </p>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-4">
+                            <div class="binary-probability-value">
+                                <div class="binary-consensus">
+                                    <h3>@q.optionData</h3>
+                                </div>
+                                <small>机会</small>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-8 col-md-offset-0 col-xs-6 col-xs-offset-2">
+                            <div>
+                                <div class="question-detail-content">
+                                    <a class="btn btn-primary md-mobile-margin-bottom" href="/Home/vote?questionID=@q.ID">vote &raquo;</a>
+                                    已投票人数：@q.voteCount
+                                </div>
+                                <hr />
+                                <div class="metadata">
+                                    <div>
+                                        <span class="info-heading">
+                                            开始时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.postTime</span></small>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="info-heading">
+                                            截止时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.endTime</span></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+             }
+             else
+             {
+                <div class="col-md-6 well">
+                    <h2>@q.title</h2>
+                    <p>
+                        @q.queDes
+                    </p>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <div id="main_@q.ID" style="height:200px;width:200px"></div>
+                            <script type="text/javascript">
+                                // 路径配置
+                                require.config({
+                                    paths: {
+                                        echarts: 'http://echarts.baidu.com/build/dist'
+                                    }
+                                });
+
+                                // 使用
+                                require(
+                                    [
+                                        'echarts',
+                                        'echarts/chart/pie' // 使用柱状图就加载bar模块，按需加载
+                                    ],
+                                    function (ec) {
+                                        // 基于准备好的dom，初始化echarts图表
+                                        var myChart = ec.init(document.getElementById('main_@q.ID'));
+                                        var str = '@q.optionData';
+                                        var jsonstr = str.replace(/&quot;/g, '"')
+                                        option = {
+                                            calculable: true,
+                                            series: [
+						                        {
+						                            name: '访问来源',
+						                            type: 'pie',
+						                            radius: ['50%', '70%'],
+						                            itemStyle: {
+						                                normal: {
+						                                    label: {
+						                                        show: false
+						                                    },
+						                                    labelLine: {
+						                                        show: false
+						                                    }
+						                                },
+						                                emphasis: {
+						                                    label: {
+						                                        show: true,
+						                                        position: 'center',
+						                                        textStyle: {
+						                                            fontSize: '20',
+						                                        }
+						                                    }
+						                                }
+						                            },
+						                            data: JSON.parse(jsonstr)
+						                        }
+                                            ]
+                                        };
+
+                                        // 为echarts对象加载数据
+                                        myChart.setOption(option);
+                                    }
+                                );
+                            </script>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div>
+                                <div class="question-detail-content">
+                                    <a class="btn btn-primary md-mobile-margin-bottom" href="/Home/vote?questionID=@q.ID">vote &raquo;</a>
+                                    已投票人数：@q.voteCount
+                                </div>
+                                <hr />
+                                <div class="metadata">
+                                    <div>
+                                        <span class="info-heading">
+                                            开始时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.postTime</span></small>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="info-heading">
+                                            截止时间
+                                        </span>
+                                        <span>
+                                            <small><span>@q.endTime</span></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+             }
+         }
+                
+
+                
             </div>
         </div>
+
+<div id="paihang_box" class="row" style="display:none;">
+    <div class="well">
         <div class="row">
-            <div class="col-md-6">
-                <h2>问题</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and gives you full control over markup
-                    for enjoyable, agile development.
-                </p>
-                <p><a class="btn btn-default" href="">vote &raquo;</a></p>
-            </div>
-            <div class="col-md-6">
-                <h2>问题</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                    enables a clean separation of concerns and gives you full control over markup
-                    for enjoyable, agile development.
-                </p>
-                <p><a class="btn btn-default" href="">vote &raquo;</a></p>
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-right">Rank</th>
+                            <th class="text-right">Username</th>
+                            <th class="text-right">No. of Questions Forecasted</th>
+                            <th class="text-right">Brier</th>
+                            <th class="text-right">Median</th>
+                            <th class="text-right">Accuracy Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-right">#名次</td>
+                            <td class="text-right">#用户名</td>
+                            <td class="text-right">#预测数</td>
+                            <td class="text-right">#brier</td>
+                            <td class="text-right">#中位数</td>
+                            <td class="text-right">#Accuracy Score</td>
+                        </tr>
+
+
+                </table>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+<script type="text/javascript">
+                function question_show() {
+                    $("#question_nav").addClass("active");
+                    $("#paihang_nav").removeClass("active");
+                    $("#question_box").show();
+                    $("#paihang_box").hide();
+                }
+                function paihang_show() {
+                    $("#question_nav").removeClass("active");
+                    $("#paihang_nav").addClass("active");
+                    $("#question_box").hide();
+                    $("#paihang_box").show();
+                }
+</script>

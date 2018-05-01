@@ -1,8 +1,283 @@
-﻿
+﻿@using VoteSystem.Models
+@model VoteModel
 @{
     ViewBag.Title = "Vote";
 }
+@Scripts.Render("~/bundles/jquery")
+@Styles.Render("~/Content/css")
+<body>
+    <div class="nav nav-tabs nav-tabs-transparent-content">
+        <div class="well forecast-area">
+            <div class="col-md-12">
+                <h2>
+                    @Model.title
+                </h2>
+                <span class="info-heading">
+                    Started
+                </span>
+                <span>
+                    <small><span>@Model.postTime</span></small>
+                </span>
+                &nbsp;·&nbsp;
+                <span class="info-heading">
+                    Closed
+                </span>
+                <span>
+                    <small><span>@Model.endTime</span></small>
+                </span>
+            </div>
+            
+            <div class="col-md-12">
+                @for (int i = 0; i < Model.tags.Length - 1; i++) {
+                    @Model.tags[i] 
+                }
+            </div>
+            <div class="col-md-12">
+                <p>@Model.queDes</p>
+            </div>
 
-<h2>Vote</h2>
-投票页面
-@ViewBag.id
+            <div class="col-md-2 control-label"><strong>选项</strong></div>
+            <div class="col-md-10 control-label"><strong>答案</strong></div>
+            @{ Html.BeginForm("Vote", "Home", FormMethod.Post);}
+                @Html.HiddenFor(m=>m.userID)
+                @Html.ValidationMessageFor(m => m.userID, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m=>m.questionID)
+                @Html.ValidationMessageFor(m => m.questionID, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m=>m.optionNum,new { id="optionNum"})
+                @for (int i = 0; i < Model.options.Length - 1; i++)
+                {
+                    <div class="col-md-2" style="padding-left:15px;">@Model.options[i]</div>
+                    <div class="col-md-10"><input id="answer_@i" class="form-control" type="number" onchange="addVoteRecord()" value="0"/></div>
+                }
+            
+                @Html.LabelFor(m => m.voteComment, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.voteComment, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.voteComment, "", new { @class = "text-danger" })
+                </div>
+                @Html.HiddenFor(m => m.voteRecord,new { id= "voteRecord" })
+                @Html.ValidationMessageFor(m => m.voteRecord, "", new { @class = "text-danger"  })
+                <div class="col-md-12">
+                    <input id="tijiao" type="submit" value="提交"/>
+                </div>
+            @{ Html.EndForm();}
+        </div>
+    </div>
+
+
+    <div class="row" style="padding-top:10px;">
+        <div class="col-md-12">
+            <ul id="challenge-question-list-tabs" class="nav nav-tabs nav-tabs-transparent-content">
+                <li id="comments" class="active"><a href="javascript:comment_show();">评论+预测</a></li>
+                <li id="chart" class=""><a href="javascript:chart_show();">图表分析</a></li>
+            </ul>
+        </div>
+    </div>
+
+    @* 用户评论块 *@
+    <div id="comment_box" >
+        @foreach (Vote v in Model.votes)
+        {
+            <div class="tab-content" style="margin-top:10px;">
+                <div class="prediction-set">
+                    <span class="membership-username">@v.userID.userNick</span>
+                    做了预测:<br>
+                    <div class="prediction-values">
+                        <div class="col-md-4 col-xs-4">
+                            <div class="info-heading">
+                                几率：
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-xs-8">
+                            <div class="info-heading">
+                                答案:
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-condensed">
+                        @{
+                                String[] record = v.voteRecord.Split('#');
+                                for (int i = 0; i < Model.options.Length - 1; i++)
+                                {
+                                    <div class="col-md-4 col-xs-4">
+                                        <div>
+                                            @record[i]
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-xs-8">
+                                        <div>
+                                            @Model.options[i]
+                                        </div>
+                                    </div>
+                                }
+                            }
+                    </div>
+                    <div class="flyover-comment-body" style="padding:10px 15px;">
+                        <p>@v.voteComment</p>
+                    </div>
+                </div>
+
+                <div class="flyover-comment-footer clearfix" style="padding:10px 15px;">
+                    <div class="vote-buttons">
+                        <span class="vote-count">0</span>
+                        <form class="button_to upvote-button vote-button" method="post" action="">
+                            <button class="btn btn-success" type="submit">
+                                赞成
+                            </button>
+                        </form>
+
+                    </div>
+                    <div class="flyover-comment-date small text-muted pull-right small-margin-top">@v.voteTime</div>
+                </div>
+            </div>
+        }
+       
+        
+    </div>
+
+    @* 图表分析块 *@
+    <div id="charts_box" class="tab-pane active" style="display:none">
+        <div class="well">
+            <div class="col-md-3 col-xs-6">
+                <h4>No. of<br>Forecasters</h4>
+                <h2>###</h2>
+            </div>
+            <div class="col-md-3 col-xs-6">
+                <h4>Forecast<br>Count</h4>
+                <h2>###</h2>
+            </div>
+            <div class="col-md-3 col-xs-6">
+                <h4>Forecasts in the<br>last 24 hours</h4>
+                <h2>11</h2>
+            </div>
+            <div class="col-md-3 col-xs-6 ">
+                <h4>No. of Forecasts<br>You've Made</h4>
+                <h2>0</h2>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="main" style="height:400px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script type="text/javascript">
+    function show_chart() {
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+               option = {
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data:['投票值']
+                    },
+
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            boundaryGap : false,
+                            data : ['周一','周二','周三','周四','周五','周六','周日']
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLabel : {
+                                formatter: '{value} '
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'当天投票值',
+                            type:'line',
+                            data:[11, 11, 15, 13, 12, 13, 10],
+                            markPoint : {
+                                data : [
+                                    {type : 'max', name: '最大值'}
+                                ]
+                            },
+                            markLine : {
+                                data : [
+                                    {type : 'average', name: '平均值'}
+                                ]
+                            }
+                        },
+
+                    ]
+                };
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            }
+        );
+    }
+</script>
+<script type="text/javascript">
+    function comment_show() {
+        $("#comments").addClass("active");
+        $("#chart").removeClass("active");
+        $("#comment_box").show();
+        $("#charts_box").hide();
+    }
+    function chart_show() {
+        $("#comments").removeClass("active");
+        $("#chart").addClass("active");
+        $("#comment_box").hide();
+        $("#charts_box").show();
+        show_chart();
+    }
+    function addVoteRecord() {
+        var num = $("#optionNum").val()
+        var res = 0
+        if (num == 1) {
+            res = $("#answer_0").val()
+            if (res > 100) {
+                $("#answer_0").val(100)
+                res = 100
+            }
+            else if (res < 0){
+                $("#answer_0").val(0)
+                res=0
+            }
+        }
+        else {
+            var sum = parseInt("0");
+            for(var i=0 ;i<num;i++){
+                sum =sum+ parseInt($("#answer_" + i).val());
+            }
+            if (sum > 100) {
+                for (var i = 0 ; i < num; i++) {
+                    $("#answer_" + i).val(0)
+                }
+                res = 0
+            } else {
+                res=''
+                for (var i = 0 ; i < num; i++) {
+                    res += ($("#answer_" + i).val()+"#")
+                }
+            }
+        }
+        $("#voteRecord").val(res)
+    }
+</script>

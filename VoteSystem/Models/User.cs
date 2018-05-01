@@ -18,5 +18,7 @@ namespace VoteSystem.Models
         public double brierNum { get; set; }//布雷尔分数
         public int rightNum { get; set; }//预测正确数
         public int upvoteNum { get; set; }//收到赞数
+        public DateTime userCreate { get; set; }//用户创建账号时间
+        public DateTime userLast { get; set; }//用户上次登录时间
     }
 }

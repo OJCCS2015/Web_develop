@@ -9,7 +9,7 @@ namespace VoteSystem.Dao
 {
     public class UserDao
     {
-        private VoteSystemDB db = new VoteSystemDB();
+        private VoteSystemDB db = (VoteSystemDB)DBContextFactory.GetCurrentContext();
         //添加用户
         public void add(User user) {
             db.users.Add(user);
@@ -36,12 +36,6 @@ namespace VoteSystem.Dao
         public User checkUser(User user) {
             User res = db.users.Where(u => u.userEmail == user.userEmail && u.userPsw == user.userPsw).FirstOrDefault();
             return res;
-        }
-        //修改密码
-        public void ReSetPsw(User user){
-            db.users.Attach(user);
-            db.Entry(user).State= EntityState.Modified;
-            db.SaveChanges();
         }
     }
 }

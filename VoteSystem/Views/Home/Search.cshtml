@@ -1,7 +1,55 @@
-﻿
+﻿@using VoteSystem.Models
+@model SearchModel
 @{
     ViewBag.Title = "Search";
 }
 
-<h2>Search</h2>
+<div id="main-container" class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>搜索结果:@Model.search_content</h2>
+            <div id="search-results">
+                <div class="pagination-container">
+                    @{
+                        if (Model.search_content.Equals("") || Model.questions.Count == 0)
+                        {
+                            <div>未找到结果</div>
+                        }
+                        else
+                        {
+                            foreach (Question q in Model.questions)
+                            {
+                                <div class="panel search-result challenge-result">
+                                    <div class="panel-heading">问题</div>
+                                    <div class="panel-body">
+                                        <div class="lead"><a href="/Home/vote?questionID=@q.ID">@q.title</a></div>
+                                        <div class="standard-margin-top">
+                                           @q.queDes
+                                        </div>
+                                    </div>
+                                </div>
+                            }
 
+                        }
+
+                    }
+                    
+                   
+                    <div class="center-block">
+                        <ul class="pagination">
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+
+                            <li>
+                                <a href="#">下一页 &rsaquo;</a>
+                            </li>
+                            <li>
+                                <a href="#">最末页 &raquo;</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

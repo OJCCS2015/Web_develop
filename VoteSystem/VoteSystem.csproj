@@ -154,6 +154,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\vote.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -184,9 +185,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\VoteSystemDBController.cs" />
     <Compile Include="Dao\QuestionDao.cs" />
-    <Compile Include="Dao\TagDao.cs" />
     <Compile Include="Dao\TypeDao.cs" />
     <Compile Include="Dao\UpVoteDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
@@ -198,7 +197,6 @@
     <Compile Include="Models\AuthenticationAttribute.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\Question.cs" />
-    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\Upvote.cs" />
     <Compile Include="Models\User.cs" />
@@ -221,8 +219,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\VoteSystemDB\Index.cshtml" />
-    <Content Include="Views\VoteSystemDB\Demo.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
     <Content Include="Views\Account\ResetPsw.cshtml" />
